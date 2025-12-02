@@ -10,6 +10,12 @@ jobs:
   kernel-default:
     runs-on: ubuntu-latest
     steps:
+      - name: Debug connectivity to Harbor
+        run: |
+          echo "Testing Harbor from inside GitHub Actions..."
+          getent hosts harbor.cloud.infn.it || nslookup harbor.cloud.infn.it || true
+          curl -vkI --connect-timeout 10 https://harbor.cloud.infn.it/ || echo "curl failed"
+
       - name: Checkout
         uses: actions/checkout@v2
 
