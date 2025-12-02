@@ -45,6 +45,6 @@ jobs:
           context: ./kernels/default
           outputs: "type=registry,push=true"
           tags: |
-            harbor.cloud.infn.it/unpacked/BETIF_DIFAET/kernel-default:${{ env.RELEASE_VERSION }}
+            harbor.cloud.infn.it/unpacked/betif_difaet/kernel-default:${{ env.RELEASE_VERSION }}
           file: ./kernels/default/Dockerfile
           platforms: linux/amd64
