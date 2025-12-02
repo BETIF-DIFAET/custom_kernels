@@ -26,8 +26,8 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: harbor.cloud.infn.it
-          username: ${{ secrets.harbor_user }}
-          password: ${{ secrets.harbor_clisecret }}
+          username: ${{ secrets.HARBOR_USER }}
+          password: ${{ secrets.HARBOR_CLISECRET }}
 
       - name: Get Repo Owner
         id: get_repo_owner
