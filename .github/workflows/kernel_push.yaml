@@ -7,8 +7,24 @@ on:
   workflow_dispatch:
 
 jobs:
-  kernel-default:
+  discover-kernels:
     runs-on: ubuntu-latest
+    outputs:
+      kernels: ${{ steps.list.outputs.kernels }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: list
+        run: |
+          # list directories, turn into JSON array: ["default","foo","bar",...]
+          dirs=$(ls -d */ | sed 's:/$::' | jq -R -s -c 'split("\n")[:-1]')
+          echo "kernels=$dirs" >> "$GITHUB_OUTPUT"
+
+  build-kernels:
+    runs-on: ubuntu-latest
+    needs: discover-kernels
+    strategy:
+      matrix:
+        kernel: ${{ fromJSON(needs.discover-kernels.outputs.kernels) }}
     steps:
       - name: Debug connectivity to Harbor
         run: |
@@ -42,10 +58,10 @@ jobs:
       - name: Build container kernel-default
         uses: docker/build-push-action@v2
         with:
-          context: ./default/
+          context: ./${{ matrix.kernel }}/
           outputs: "type=registry,push=true"
           tags: |
-            harbor.cloud.infn.it/unpacked/betif_difaet/kernel-default:${{ env.RELEASE_VERSION }}
-            harbor.cloud.infn.it/unpacked/betif_difaet/kernel-default:latest
-          file: ./default/Dockerfile
+            harbor.cloud.infn.it/unpacked/betif_difaet/${{ matrix.kernel }}:${{ env.RELEASE_VERSION }}
+            harbor.cloud.infn.it/unpacked/betif_difaet/${{ matrix.kernel }}:latest
+          file: ./${{ matrix.kernel }}/Dockerfile
           platforms: linux/amd64
