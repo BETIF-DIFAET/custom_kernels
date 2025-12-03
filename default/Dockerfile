@@ -34,7 +34,8 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive TZ=Europe/Zurich #apt-get i
 
 RUN python3 -m pip install \
     click \
-    ipython 
+    ipython \
+    ipykernel
 
 RUN apt-get -y install davix
 
