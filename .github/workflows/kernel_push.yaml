@@ -63,5 +63,7 @@ jobs:
           tags: |
             harbor.cloud.infn.it/unpacked/betif_difaet/${{ matrix.kernel }}:${{ env.RELEASE_VERSION }}
             harbor.cloud.infn.it/unpacked/betif_difaet/${{ matrix.kernel }}:latest
+            ghcr.io/${{ steps.get_repo_owner.outputs.repo_owner }}/${{ matrix.kernel }}:${{ env.RELEASE_VERSION }}
+            ghcr.io/${{ steps.get_repo_owner.outputs.repo_owner }}/${{ matrix.kernel }}:latest
           file: ./${{ matrix.kernel }}/Dockerfile
           platforms: linux/amd64
