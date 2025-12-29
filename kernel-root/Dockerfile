@@ -65,8 +65,11 @@ RUN python3 -m pip install \
 
 RUN conda clean -a -y
 
-RUN echo /usr/local/lib/root >> /etc/ld.so.conf && ldconfig
-ENV PYTHONPATH=/usr/local/lib/root:$PYTHONPATH
+#RUN echo /usr/local/lib/root >> /etc/ld.so.conf && ldconfig
+#ENV PYTHONPATH=/usr/local/lib/root:$PYTHONPATH
+ENV PATH=/opt/conda/envs/kernel/bin:/opt/conda/bin:$PATH
+ENV LD_LIBRARY_PATH=/opt/conda/envs/kernel/lib:$LD_LIBRARY_PATH
+
 ENV CLING_STANDARD_PCH=none
 
 
