@@ -10,14 +10,14 @@ FROM ghcr.io/betif-difaet/kernel-default:latest
 
 # Install WDF
 
-ENV ENV_ROOT="/opt/conda"
+ENV ENV_ROOT="/opt/conda/envs/kernel/"
 RUN conda install compilers "cmake>=3.10" make git boost pybind11 fftw gsl conda-forge::libframel -c conda-forge -y
 
 RUN echo "Install additional packages!"
 RUN conda install matplotlib pandas networkx scipy scikit-learn pycbc==2.8 statsmodels PyWavelets -c conda-forge -y
 RUN pip install ipysigma
 
-RUN git clone https://github.com/elenacuoco/p4TSA && cd p4TSA && cmake --install-prefix=/opt/conda CMakeLists.txt \
+RUN git clone https://github.com/elenacuoco/p4TSA && cd p4TSA && cmake --install-prefix=$ENV_ROOT CMakeLists.txt \
         && make -j "$(nproc)" \
         && make install \
         && cd python-wrapper \
