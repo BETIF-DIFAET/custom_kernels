@@ -68,7 +68,8 @@ RUN conda clean -a -y
 #RUN echo /usr/local/lib/root >> /etc/ld.so.conf && ldconfig
 #ENV PYTHONPATH=/usr/local/lib/root:$PYTHONPATH
 ENV PATH=/opt/conda/envs/kernel/bin:/opt/conda/bin:$PATH
-ENV LD_LIBRARY_PATH=/opt/conda/envs/kernel/lib:$LD_LIBRARY_PATH
+#ENV LD_LIBRARY_PATH=/opt/conda/envs/kernel/lib:$LD_LIBRARY_PATH
+ENV CPATH=/opt/conda/envs/kernel/x86_64-conda-linux-gnu/sysroot/usr/include
 
 ENV CLING_STANDARD_PCH=none
 
