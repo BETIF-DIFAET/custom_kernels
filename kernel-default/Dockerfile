@@ -2,7 +2,7 @@ FROM almalinux:9
 
 RUN yum -y clean metadata \
     && yum install -y dnf-plugins-core \
-    && yum -y install epel-release python39 python3-pip python3-devel boost-python3 jq procps \
+    && yum -y install epel-release git wget python39 python3-pip python3-devel boost-python3 jq procps \
     && yum -y clean all
 
 RUN yum search voms
