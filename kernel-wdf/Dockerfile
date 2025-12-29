@@ -1,4 +1,4 @@
-FROM ghcr.io/betif-difaet/kernel-default:v0.0.9
+FROM ghcr.io/betif-difaet/kernel-default:latest
 
 # Put conda in path so we can use conda activate
 #ENV PATH=$CONDA_DIR/bin:$PATH
