@@ -9,6 +9,8 @@ FROM ghcr.io/betif-difaet/kernel-default:latest
 #SHELL ["conda", "run", "-n", "base", "/bin/bash", "-c"]
 
 # Install WDF
+
+ENV ENV_ROOT="/opt/conda"
 RUN conda install compilers "cmake>=3.10" make git boost pybind11 fftw gsl conda-forge::libframel -c conda-forge -y
 
 RUN echo "Install additional packages!"
