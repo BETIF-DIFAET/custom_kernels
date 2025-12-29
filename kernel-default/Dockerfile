@@ -25,9 +25,6 @@ RUN echo "conda activate kernel" >> ~/.bashrc
 RUN conda create -n kernel -y
 SHELL ["conda", "run", "-n", "kernel", "/bin/bash", "-c"]
 
-#RUN conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main \
-# && conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
-
 ENV TINI_VERSION=v0.19.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /bin/tini
 RUN chmod +x /bin/tini

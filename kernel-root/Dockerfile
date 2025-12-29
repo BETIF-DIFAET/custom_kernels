@@ -22,16 +22,11 @@ RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-py311_25.3.1-1-L
 # Put conda in path so we can use conda activate
 ENV PATH=$CONDA_DIR/bin:$PATH
 
-
-
 RUN conda init bash
 RUN echo "conda activate kernel" >> ~/.bashrc
 
 RUN conda create -n kernel -y
 SHELL ["conda", "run", "-n", "kernel", "/bin/bash", "-c"]
-
-#RUN conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main \
-# && conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
 
 ENV TINI_VERSION=v0.19.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /bin/tini
@@ -45,15 +40,10 @@ RUN dnf -y install davix
 RUN conda install -c conda-forge libstdcxx-ng
 RUN conda install --solver=classic conda-forge::conda-libmamba-solver conda-forge::libmamba conda-forge::libmambapy conda-forge::libarchive
 
-#RUN conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main \
-# && conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
-
 RUN conda install -c conda-forge -y python=3.11 "root=6.34.*" boost-cpp bokeh==3.1.0
-
 ################
 
 RUN python3 -m pip install rucio==37.7.1 rucio-clients==37.7.1 
-
 RUN python3 -m pip install -U pip setuptools wheel
 
 RUN python3 -m pip install \
@@ -65,14 +55,9 @@ RUN python3 -m pip install \
 
 RUN conda clean -a -y
 
-#RUN echo /usr/local/lib/root >> /etc/ld.so.conf && ldconfig
-#ENV PYTHONPATH=/usr/local/lib/root:$PYTHONPATH
 ENV PATH=/opt/conda/envs/kernel/bin:/opt/conda/bin:$PATH
-#ENV LD_LIBRARY_PATH=/opt/conda/envs/kernel/lib:$LD_LIBRARY_PATH
 ENV CPATH=/opt/conda/envs/kernel/x86_64-conda-linux-gnu/sysroot/usr/include
 
 ENV CLING_STANDARD_PCH=none
-
-
 
 ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "kernel"]
