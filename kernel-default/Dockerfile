@@ -20,9 +20,9 @@ RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-py311_25.3.1-1-L
 ENV PATH=$CONDA_DIR/bin:$PATH
 
 RUN conda init bash
-RUN echo "conda activate base" >> ~/.bashrc
+RUN echo "conda activate kernel" >> ~/.bashrc
 
-SHELL ["conda", "run", "-n", "base", "/bin/bash", "-c"]
+SHELL ["conda", "run", "-n", "kernel", "/bin/bash", "-c"]
 
 RUN conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main \
  && conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
@@ -46,4 +46,4 @@ RUN python3 -m pip install \
 
 RUN conda clean -a -y
 
-ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "base"]
+ENTRYPOINT ["conda", "run", "--no-capture-output", "-n", "kernel"]
