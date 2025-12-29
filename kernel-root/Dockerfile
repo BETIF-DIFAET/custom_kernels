@@ -27,6 +27,7 @@ ENV PATH=$CONDA_DIR/bin:$PATH
 RUN conda init bash
 RUN echo "conda activate kernel" >> ~/.bashrc
 
+RUN conda create -n kernel -y
 SHELL ["conda", "run", "-n", "kernel", "/bin/bash", "-c"]
 
 RUN conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main \
