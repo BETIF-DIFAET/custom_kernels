@@ -20,7 +20,7 @@ jobs:
           echo "kernels=$dirs" >> "$GITHUB_OUTPUT"
 
   build-kernels:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: discover-kernels
     strategy:
       matrix:
