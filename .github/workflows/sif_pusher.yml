@@ -1,4 +1,4 @@
-name: kernel-images
+name: kernel-images-sif
 
 on:
   push:
