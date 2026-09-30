@@ -16,7 +16,7 @@ jobs:
       - id: list
         run: |
           # list directories, turn into JSON array: ["default","foo","bar",...]
-          dirs=$(ls -d */ | sed 's:/$::' | jq -R -s -c 'split("\n")[:-1]')
+          dirs=$(ls -d */ | sed 's:/$::' | grep -v 'igwn' | jq -R -s -c 'split("\n")[:-1]')
           echo "kernels=$dirs" >> "$GITHUB_OUTPUT"
 
   build-kernels:
@@ -26,11 +26,6 @@ jobs:
       matrix:
         kernel: ${{ fromJSON(needs.discover-kernels.outputs.kernels) }}
     steps:
-      - name: Debug connectivity to Harbor
-        run: |
-          echo "Testing Harbor from inside GitHub Actions..."
-          getent hosts harbor.cloud.infn.it || nslookup harbor.cloud.infn.it || true
-          curl -vkI --connect-timeout 10 https://harbor.cloud.infn.it/ || echo "curl failed"
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -43,13 +38,6 @@ jobs:
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-
-      - name: Login to INFN Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: harbor.cloud.infn.it
-          username: ${{ secrets.HARBOR_USER }}
-          password: ${{ secrets.HARBOR_CLISECRET }}
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -91,10 +79,6 @@ jobs:
         run: |
           set -eux
           docker tag local/${{ matrix.kernel }}:${{ env.RELEASE_VERSION }} \
-            harbor.cloud.infn.it/unpacked/betif_difaet/${{ matrix.kernel }}:${{ env.RELEASE_VERSION }}
-          docker tag local/${{ matrix.kernel }}:${{ env.RELEASE_VERSION }} \
-            harbor.cloud.infn.it/unpacked/betif_difaet/${{ matrix.kernel }}:latest
-          docker tag local/${{ matrix.kernel }}:${{ env.RELEASE_VERSION }} \
             ghcr.io/${{ steps.get_repo_owner.outputs.repo_owner }}/${{ matrix.kernel }}:${{ env.RELEASE_VERSION }}
           docker tag local/${{ matrix.kernel }}:${{ env.RELEASE_VERSION }} \
             ghcr.io/${{ steps.get_repo_owner.outputs.repo_owner }}/${{ matrix.kernel }}:latest
@@ -102,7 +86,5 @@ jobs:
       - name: Push images
         run: |
           set -eux
-          docker push harbor.cloud.infn.it/unpacked/betif_difaet/${{ matrix.kernel }}:${{ env.RELEASE_VERSION }}
-          docker push harbor.cloud.infn.it/unpacked/betif_difaet/${{ matrix.kernel }}:latest
           docker push ghcr.io/${{ steps.get_repo_owner.outputs.repo_owner }}/${{ matrix.kernel }}:${{ env.RELEASE_VERSION }}
           docker push ghcr.io/${{ steps.get_repo_owner.outputs.repo_owner }}/${{ matrix.kernel }}:latest

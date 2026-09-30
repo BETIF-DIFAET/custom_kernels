@@ -16,7 +16,7 @@ jobs:
       - id: list
         run: |
           # list directories, turn into JSON array: ["default","foo","bar",...]
-          dirs=$(ls -d */ | sed 's:/$::' | jq -R -s -c 'split("\n")[:-1]')
+          dirs=$(ls -d */ | sed 's:/$::' | grep -v 'igwn'| jq -R -s -c 'split("\n")[:-1]')
           echo "kernels=$dirs" >> "$GITHUB_OUTPUT"
 
   build-kernels:
